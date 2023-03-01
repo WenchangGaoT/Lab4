@@ -37,7 +37,7 @@ d3.csv("/iris.csv").then(function(data){
     // TO DO: Create a scale for the x-axis that maps the x axis domain to the range of the canvas width
     // Hint: You can create variables to represent the min and max of the x-axis values
     // TO DO: Fix these
-    var sepal_length_min = 4
+    var sepal_length_min = 3.7
     var sepal_length_max = 8
 
     // TO DO: Implement the x-scale domain and range for the x-axis
@@ -47,18 +47,28 @@ d3.csv("/iris.csv").then(function(data){
                             .range([0, width])
 
     // TO DO: Append the scaled x-axis tick marks to the svg
+
+    svg_scatter.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale_scatter).tickSize(-height).tickFormat('').ticks(10))
+
     svg_scatter.append("g")
         .attr("class", "xAxis")
         .style("font", "11px monaco")
         .attr("transform", `translate(0, ${height})`)
         // TO DO: Explain the following line of code in a comment
+        // d3.axisBottom creates the bottom axis using our designed x-scale domain. This line calls the axisBottom function
+        // so that x-axis could be drawn in the svg
         .call(d3.axisBottom(xScale_scatter))
+
+
 
     // TO DO: Create a scale for the y-axis that maps the y axis domain to the range of the canvas height
     // Hint: You can create variables to represent the min and max of the y-axis values
     // TO DO: Fix these
-    var petal_length_min = 0
-    var petal_length_max = 7
+    var petal_length_min = 0.5
+    var petal_length_max = 7.3
 
     var yScale_scatter = d3.scaleLinear()
                         // TO DO: Fill these out
@@ -66,12 +76,17 @@ d3.csv("/iris.csv").then(function(data){
                         .range([height, 0])
 
     // TO DO: Append the scaled y-axis tick marks to the svg
+
+    svg_scatter.append("g")
+            .attr('class', 'y axis')
+            .call(d3.axisLeft(yScale_scatter).tickSize(-width).tickFormat('').ticks(10))
+
     svg_scatter.append("g")
             .attr("class", "yAxis")
             .style("font", "11px monaco")
             .call(d3.axisLeft(yScale_scatter))
 
-    
+
     // TODO: Draw scatter plot dots here
     svg_scatter.append("g")
         .selectAll("dot")
@@ -124,9 +139,9 @@ d3.csv("/iris.csv").then(function(data){
         .style("font-size", "16px") 
         .style("text-decoration", "underline")  
         // TO DO: Finish these...
-        // .attr("x", ...)             
-        // .attr("y", ...)
-        // .text(...);
+        .attr("x", 0.5*width)             
+        .attr("y", -10)
+        .text("Petal Length vs. Sepal Length");
 
 
     /********************************************************************** 
