@@ -29,7 +29,7 @@ const svg_bar = d3.select("#my_barchart")
 
 // Read the iris dataset
 d3.csv("/iris.csv").then(function(data){
-    console.log(data[0]);
+    // console.log(data[0]);
     /****************************************   
      TO DO: Complete the scatter plot tasks
     *****************************************/
@@ -58,7 +58,7 @@ d3.csv("/iris.csv").then(function(data){
     // Hint: You can create variables to represent the min and max of the y-axis values
     // TO DO: Fix these
     var petal_length_min = 0
-    var petal_length_max = 6
+    var petal_length_max = 7
 
     var yScale_scatter = d3.scaleLinear()
                         // TO DO: Fill these out
@@ -85,28 +85,38 @@ d3.csv("/iris.csv").then(function(data){
         .attr("cy", function(d) {
             return yScale_scatter(d["petal.length"]);
         })
-        .attr("r", 1)
+        .attr("r", 3)
         .attr("stroke", "black")
         .attr("stroke-weight", 1)
-        .style('fill', "#69b3a2")
-        // .style("fill", function(d) {...})
+        // .style('fill', "#3182bd")
+        .style("fill", function(d) {
+            if (d["variety"] == "Setosa") {
+                return "#3182bd";
+            }
+            if (d["variety"] == "Versicolor") {
+                return "#9ecae1";
+            }
+            if (d["variety"] == "Virginica") {
+                return "#a1d99b"
+            }
+        })
 
     // TO DO: X axis label
     svg_scatter.append("text")
         .attr("text-anchor", "end")
         // TO DO: Finish these...
-        // .attr("x", ...)
-        // .attr("y", ...)
-        // .text(...)
+        .attr("x", width)
+        .attr("y", height+margin.top+20)
+        .text("Sepal Length")
         
     // TO DO: Y axis label
     svg_scatter.append("text")
         .attr("text-anchor", "end")
         .attr("transform", "rotate(-90)")
         // TO DO: Finish these...
-        // .attr("y", ...)
-        // .attr("x", ...)
-        // .text(...)
+        .attr("y", -margin.left+20)
+        .attr("x", -margin.top)
+        .text("Petal Length")
 
     // TO DO: Chart title
     svg_scatter.append("text")
