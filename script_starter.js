@@ -51,7 +51,7 @@ d3.csv("/iris.csv").then(function(data){
     svg_scatter.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale_scatter).tickSize(-height).tickFormat('').ticks(10))
+        .call(d3.axisBottom(xScale_scatter).tickSize(-height).tickFormat('').ticks(9))
 
     svg_scatter.append("g")
         .attr("class", "xAxis")
@@ -79,7 +79,7 @@ d3.csv("/iris.csv").then(function(data){
 
     svg_scatter.append("g")
             .attr('class', 'y axis')
-            .call(d3.axisLeft(yScale_scatter).tickSize(-width).tickFormat('').ticks(10))
+            .call(d3.axisLeft(yScale_scatter).tickSize(-width).tickFormat('').ticks(13))
 
     svg_scatter.append("g")
             .attr("class", "yAxis")
@@ -144,6 +144,7 @@ d3.csv("/iris.csv").then(function(data){
         .text("Petal Length vs. Sepal Length");
 
 
+
     /********************************************************************** 
      TO DO: Complete the bar chart tasks
 
@@ -156,9 +157,9 @@ d3.csv("/iris.csv").then(function(data){
     // Compute all average values for each attribute, except 'variety'
     average_data.push({'sepal.length':d3.mean(data, function(d){return d['sepal.length']})})
     // TO DO (optional): Add the remaining values to your array
-    average_data.push(0)
-    average_data.push(0)
-    average_data.push(0)
+    average_data.push({'sepal.width':d3.mean(data, function(d){return d['sepal.width']})})
+    average_data.push({'petal.length':d3.mean(data, function(d){return d['petal.length']})})
+    average_data.push({'petal.width':d3.mean(data, function(d){return d['petal.width']})})
 
     // Compute the maximum and minimum values from the average values to use for later
     let max_average = Object.values(average_data[0])[0]
@@ -173,9 +174,9 @@ d3.csv("/iris.csv").then(function(data){
     // Hint: the domain for X should be the attributes of the dataset
     // xDomain = ['sepal.length', ...]
     // then you can use 'xDomain' as input to .domain()
-    var xDomain = []
+    var xDomain = ['sepal.length', 'sepal.width', 'petal.length', 'petal.width']
     var xScale_bar = d3.scaleBand()
-                // .domain(...)
+                .domain(xDomain)
                 .range([0, width])
                 .padding(0.4)
     
@@ -185,11 +186,18 @@ d3.csv("/iris.csv").then(function(data){
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale_bar))
         // ....
+        .selectAll("text")
+            .style("text-anchor", "middle")
+            .style("font", "10px monaco");
+
+    svg_bar.append("g")
+        .attr('class', 'x axis')
+        .call(d3.axisBottom(xScale_bar).tickSize(height).tickFormat('').ticks(4))
 
     // TO DO: Create a scale for the y-axis that maps the y axis domain to the range of the canvas height
     var yScale_bar = d3.scaleLinear()
         // TO DO: Fix this!
-        // .domain(...)
+        .domain([0, 6.2])
         .range ([height, 0])
         
     // TO DO: Finish this
@@ -197,14 +205,19 @@ d3.csv("/iris.csv").then(function(data){
         .attr("class", "yAxis")
         .call(d3.axisLeft(yScale_bar))
         // ....
+    
+    svg_bar.append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(yScale_bar).tickSize(-width).tickFormat('').ticks(12))
+
 
     // TO DO: You can create a variable that will serve as a map function for your sequential color map
     // Hint: Look at d3.scaleLinear() 
     // var bar_color = d3.scaleLinear()...
     // Hint: What would the domain and range be?
     let bar_color = d3.scaleLinear()
-                // .domain()  
-                // .range()
+                .domain([min_average, max_average])  
+                .range(['#fee0d2', '#de2d26'])
                 
 
     // TO DO: Append bars to the bar chart with the appropriately scaled height
@@ -213,17 +226,57 @@ d3.csv("/iris.csv").then(function(data){
     // Hint: .attr("fill") should fill the bars using a function, and that function can be from the above bar_color function we created
     svg_bar.selectAll("bar")
         // TO DO: Fix this
+        .data(average_data)
+        .enter()
+        .append("rect")
+          .attr("x", function(d) { 
+            // console.log(Object.keys(d)[0]);
+            return xScale_bar(Object.keys(d)[0]); 
+        })
+          .attr("y", function(d) { 
+            // console.log(yScale_bar(Object.values(d)[0]));
+            return yScale_bar(Object.values(d)[0]); 
+        })
+          .attr("width", xScale_bar.bandwidth())
+          .attr("height", function(d) { 
+            // console.log(Object.values(d)[0])
+            return height-yScale_bar(Object.values(d)[0]); 
+        })
+          .attr("fill", function(d) {
+            console.log(bar_color(Object.values(d)[0]))
+            return bar_color(Object.values(d)[0]);
+          })
 
 
     // TO DO: Append x-axis label
     svg_bar.append("text")
         // TO DO: Fix this
+        .attr("text-anchor", "end")
+        // TO DO: Finish these...
+        .attr("x", width)
+        .attr("y", height+margin.top+20)
+        .text("Attribute")
         
     // TO DO: Append y-axis label
-    
+    svg_bar.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        // TO DO: Finish these...
+        .attr("y", -margin.left+20)
+        .attr("x", -margin.top)
+        .text("Average")
     // TO DO: Append bar chart title
+    svg_bar.append("text")
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        // TO DO: Finish these...
+        .attr("x", 0.5*width)             
+        .attr("y", -10)
+        .text("Average Values Per Attribute");
 
     // TO DO: Draw gridlines for both charts
+    // Done before
 
     // Fix these (and maybe you need more...)
     // d3.selectAll("g.yAxis g.tick")
