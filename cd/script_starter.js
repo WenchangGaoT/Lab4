@@ -1,7 +1,6 @@
 // Color maps you can use: https://colorbrewer2.org/
 
 // Set the dimensions and margins of the graph. You don't need to change this.
-
 const margin = {top: 30, right: 30, bottom: 70, left: 60},
 width = 500 - margin.left - margin.right,
 height = 500 - margin.top - margin.bottom;
@@ -17,19 +16,17 @@ const svg_scatter = d3.select("#my_scatterplot")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
 /* SVG_BAR WILL REPRESENT THE CANVAS THAT YOUR BARCHART WILL BE DRAWN ON */
-
 // Append the svg object to the body of the page. You don't need to change this.
 const svg_bar = d3.select("#my_barchart")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Read the iris dataset
 d3.csv("/iris.csv").then(function(data){
-    console.log(data[0]);
+
     /****************************************   
      TO DO: Complete the scatter plot tasks
     *****************************************/
@@ -37,13 +34,13 @@ d3.csv("/iris.csv").then(function(data){
     // TO DO: Create a scale for the x-axis that maps the x axis domain to the range of the canvas width
     // Hint: You can create variables to represent the min and max of the x-axis values
     // TO DO: Fix these
-    var sepal_length_min = 4
-    var sepal_length_max = 8
+    var sepal_length_min = 0
+    var sepal_length_max = 0
 
     // TO DO: Implement the x-scale domain and range for the x-axis
     var xScale_scatter = d3.scaleLinear()
                             // TO DO: Fill these out
-                            .domain([sepal_length_min, sepal_length_max])
+                            // .domain()
                             .range([0, width])
 
     // TO DO: Append the scaled x-axis tick marks to the svg
@@ -58,11 +55,11 @@ d3.csv("/iris.csv").then(function(data){
     // Hint: You can create variables to represent the min and max of the y-axis values
     // TO DO: Fix these
     var petal_length_min = 0
-    var petal_length_max = 6
+    var petal_length_max = 0
 
     var yScale_scatter = d3.scaleLinear()
                         // TO DO: Fill these out
-                        .domain([petal_length_min, petal_length_max])
+                        // .domain()
                         .range([height, 0])
 
     // TO DO: Append the scaled y-axis tick marks to the svg
@@ -76,19 +73,13 @@ d3.csv("/iris.csv").then(function(data){
     svg_scatter.append("g")
         .selectAll("dot")
         // TO DO: Finish the rest of this
-        .data(data)
-        .join('circle')
-        .attr("cx", function(d) {
-            // console.log(d["sepal.length"]);
-            return xScale_scatter(d["sepal.length"]);
-        })
-        .attr("cy", function(d) {
-            return yScale_scatter(d["petal.length"]);
-        })
-        .attr("r", 1)
-        .attr("stroke", "black")
-        .attr("stroke-weight", 1)
-        .style('fill', "#69b3a2")
+        // .data(...)
+        // .join(...)
+        // .attr("cx", function(d) {return ...})
+        // .attr("cy", function(d) {return ...})
+        // .attr("r", ...)
+        // .attr("stroke", "black")
+        // .attr("stroke-weight", 1)
         // .style("fill", function(d) {...})
 
     // TO DO: X axis label
