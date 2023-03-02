@@ -100,7 +100,7 @@ d3.csv("/iris.csv").then(function(data){
         .attr("cy", function(d) {
             return yScale_scatter(d["petal.length"]);
         })
-        .attr("r", 3)
+        .attr("r", 6)
         .attr("stroke", "black")
         .attr("stroke-weight", 1)
         // .style('fill', "#3182bd")
@@ -229,6 +229,7 @@ d3.csv("/iris.csv").then(function(data){
         .data(average_data)
         .enter()
         .append("rect")
+          .attr("stroke", 'black') 
           .attr("x", function(d) { 
             // console.log(Object.keys(d)[0]);
             return xScale_bar(Object.keys(d)[0]); 
@@ -246,6 +247,7 @@ d3.csv("/iris.csv").then(function(data){
             console.log(bar_color(Object.values(d)[0]))
             return bar_color(Object.values(d)[0]);
           })
+        
 
 
     // TO DO: Append x-axis label
